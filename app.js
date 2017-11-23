@@ -8,6 +8,7 @@ const   express         = require('express'),
 require('dotenv').config();
 mongoose.connect('mongodb://localhost/voting', {useMongoClient: true});
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
 
 //Passport configuration
 app.use(require('express-session')({
