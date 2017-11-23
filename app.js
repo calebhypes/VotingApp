@@ -9,7 +9,7 @@ require('dotenv').config();
 mongoose.connect('mongodb://localhost/voting', {useMongoClient: true});
 app.set('view engine', 'ejs');
 
-//Passport config
+//Passport configuration
 app.use(require('express-session')({
     secret: 'The secret to end all secrets!',
     resave: false,
@@ -19,6 +19,7 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// passport github config
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
