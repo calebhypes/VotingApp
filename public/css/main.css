@@ -1,17 +1,11 @@
 body {
     margin: 0;
     padding: 0;
+    /* box-sizing: border-box; */
 }
 
 nav {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-    background-color: lightslategray;
-    height: 70px;
-    width: 100%;
 }
 
 nav li {
@@ -19,7 +13,16 @@ nav li {
     margin: 0 20px;
 }
 
-nav li a {
+header {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: lightslategray;
+}
+
+header a {
     text-decoration: none;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
@@ -27,12 +30,12 @@ nav li a {
     transition: opacity 0.5s;
 }
 
-nav li a:hover {
+header a:hover {
     opacity: 1;
 }
 
-.right {
-    display: flex;
+header h2 {
+    margin-left: 20px;
 }
 
 .atf {
@@ -42,10 +45,6 @@ nav li a:hover {
     width: 100%;
     height: 100vh;
     text-align: center;
-}
-
-.atf div {
-    padding-bottom: 15%;
 }
 
 .atf div hr {
