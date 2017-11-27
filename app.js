@@ -61,14 +61,24 @@ passport.deserializeUser(function(id, done) {
     });
 });
 
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
+
+// Index route
 app.get('/', (req, res) => {
     res.render('index');
 });
 
+// github authentication route
 app.get('/auth/github', passport.authenticate('github', { scope: [ 'user:email' ]}));
 
+
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
-    res.json(req.user);
+    res.redirect('/');
+    console.log(req.user.username + " logged in successfully");
+    // res.json(req.user);
 });
 
 app.listen(3000, () =>  {

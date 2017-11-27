@@ -3,11 +3,17 @@
 <!-- <h1>Homepage</h1>
 <a href="/auth/github">Login with Github!</a> -->
 
+
 <section class="atf">
     <div>
         <h2>Welcome to GitVote!</h2>
         <hr>
-        <a href="/auth/github"><button>Sign in with Github <i class="fa fa-github"></i></button></a>
+        <!-- <a href="/auth/github"><button><span>Sign in with Github </span><i class="fa fa-github"></i></button></a> -->
+        <% if (!currentUser) { %>
+            <p>An open-source polling community for all Github developers! <a href="/auth/github/">Sign in</a> and peruse our polls!</p>
+        <% } else { %>
+            <p>An open-source polling community for all Github developers!</p>
+        <% } %>
     </div>
 </section>
 
