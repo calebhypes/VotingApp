@@ -51,6 +51,10 @@ nav li span {
     text-align: center;
 }
 
+.atf h1 {
+    font-size: 2em;
+}
+
 .atf div hr {
     width: 25%;
 }
@@ -73,4 +77,46 @@ nav li span {
 header,
 .atf {
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.recent ul {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+}
+
+.recent ul li {
+    border: 1px solid grey;
+    background-color: lightgray;
+    color: white;
+    padding: 15px;
+    width: 50%;
+    margin-bottom: 10px;
+}
+
+footer {
+    height: 70px;
+    background-color: slategray;
+    width: 100%;
+}
+
+footer a {
+    text-decoration: none;
+    color: lightblue;
+}
+
+footer ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    list-style: none;
+    margin: 0;
+}
+
+footer ul li {
+    margin: 20px 100px;
 }
