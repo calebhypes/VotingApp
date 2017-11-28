@@ -38,7 +38,7 @@ passport.use(new GitHubStrategy({
     };
 
     // update the user if s/he exists or add a new user
-    User.findOneAndUpdate(searchQuery, updates, options, function(err, user) {
+    User.findOneAndUpdate(searchQuery, updates, options, (err, user) => {
         if(err) {
             return done(err);
         } else {
@@ -57,6 +57,12 @@ router.get('/auth/github/callback', passport.authenticate('github', { failureRed
     res.redirect('/');
     console.log(req.user.username + " logged in successfully");
     // res.json(req.user);
+});
+
+// logout logic
+router.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect('/');
 });
 
 module.exports = router;

@@ -40,6 +40,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', indexRoutes);
+app.use('/polls', pollRoutes);
 
 app.listen(3000, () =>  {
     console.log('Voting server is running...');

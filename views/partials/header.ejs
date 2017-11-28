@@ -2,6 +2,8 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/components/button.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/components/menu.min.css">
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
@@ -11,16 +13,16 @@
         </h2>
         <nav>
             <% if (!currentUser) { %>
-                <li><a href="#">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="/auth/github/">Login with Github <i class="fa fa-lg fa-github"></i></a></li>
             <% } else { %>
                 <li><span>Welcome, <%= currentUser.username %></span></li>
-                <li><a href="#">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="#">About</a></li>
-                <li><a href="#">All Polls</a></li>
+                <li><a href="/polls">All Polls</a></li>
                 <li><a href="#">My Polls</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="/logout">Logout</a></li>
             <% } %>
         </nav>
     </header>
