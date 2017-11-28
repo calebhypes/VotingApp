@@ -1,38 +1,35 @@
 <% include ../views/partials/header %>
 
-<!-- <h1>Homepage</h1>
-<a href="/auth/github">Login with Github!</a> -->
+<main>
+    <section class="atf">
+        <div>
+            <h1>Welcome to GitVote!</h1>
+            <hr>
+            <% if (!currentUser) { %>
+                <p>An open-source polling community for all Github developers! <a href="/auth/github/" class="ui inverted tiny green button">Sign in</a> and peruse our polls!</p>
+            <% } else { %>
+                <p>An open-source polling community for all Github developers!</p>
+                <a href="/polls" class="ui medium primary button">View all Polls</a>
+                <a href="#" class="ui medium green button">Submit new Poll</a>
+            <% } %>
+        </div>
+    </section>
 
-
-<section class="atf">
-    <div>
-        <h1>Welcome to GitVote!</h1>
-        <hr>
-        <!-- <a href="/auth/github"><button><span>Sign in with Github </span><i class="fa fa-github"></i></button></a> -->
-        <% if (!currentUser) { %>
-            <p>An open-source polling community for all Github developers! <a href="/auth/github/" class="ui inverted tiny green button">Sign in</a> and peruse our polls!</p>
-        <% } else { %>
-            <p>An open-source polling community for all Github developers!</p>
-            <a href="/polls" class="ui medium primary button">View all Polls</a>
-            <a href="#" class="ui medium green button">Submit new Poll</a>
-        <% } %>
-    </div>
-</section>
-
-<section class="polls">
-    <h3>Recent Polls</h3>
-    <ul>
-        <li>Poll Name</li>
-        <li>Poll Name</li>
-        <li>Poll Name</li>
-        <li>Poll Name</li>
-        <li>Poll Name</li>
-        <li>Poll Name</li>
-        <li>Poll Name</li>
-        <li>Poll Name</li>
-        <li>Poll Name</li>
-        <li>Poll Name</li>
-    </ul>
-</section>
+    <section class="polls">
+        <h3>Recent Polls</h3>
+        <ul>
+            <li>Poll Name</li>
+            <li>Poll Name</li>
+            <li>Poll Name</li>
+            <li>Poll Name</li>
+            <li>Poll Name</li>
+            <li>Poll Name</li>
+            <li>Poll Name</li>
+            <li>Poll Name</li>
+            <li>Poll Name</li>
+            <li>Poll Name</li>
+        </ul>
+    </section>
+</main>
 
 <% include ../views/partials/footer %>
