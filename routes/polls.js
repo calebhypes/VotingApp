@@ -5,17 +5,54 @@ const express   = require('express'),
 
 // Index - Display all polls
 router.get('/', (req, res) => {
-    res.render('polls/index')
+    Poll.find({}, (err, allPolls) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('polls/index', {polls: allPolls, currentUser: req.user})
+        }
+    });
 });
 
 // Create - Add new poll to DB
 router.post('/', (req, res) => {
-    res.send('new poll posted!');
+    // res.send('new poll posted!');
+    var question = req.body.question;
+    var optionsList = req.body.options.split(/\n/);
+    // var options = [];
+    var creator = {
+        id: req.user._id,
+        username: req.user.username
+    };
+
+    // for (var i=0; i < optionsList.length; i++) {
+    //     if (/\S/.test(optionsList[i])) {
+    //         poll.pollOptions.options.push(optionsList[i].trim());
+    //     }        
+    // }
+
+    var newPoll = {question: question, creator: creator}
+
+    // Poll creation is working however currently there is an issue with adding the trimmed options to the pollOptions array.
+    Poll.create(newPoll, (err, poll) => {
+        if (err) {
+            console.log(err);
+        } else {
+            for (var i=0; i < optionsList.length; i++) {
+                if (/\S/.test(optionsList[i])) {
+                    poll.pollOptions.push(optionsList[i].trim());
+                }        
+            }
+            console.log(poll.pollOptions[0].option);
+            res.redirect('/polls');
+        }
+    });
+    // res.send('Here are the options for the poll titled \'' + question +'\': ' + options);
 });
 
 // New - Form to add new poll
 router.get('/new', (req, res) => {
-    res.send('Create new poll!');
+    res.render('polls/new');
 });
 
 // Show - Show selected poll info

@@ -1,0 +1,15 @@
+<% include ../partials/header %>
+
+    <main>
+        <section class="form">
+            <h1>Create a New Poll</h1>
+            <form action="/polls" method="POST">
+                <input type="text" name="question" placeholder="What's your question?">
+                <textarea name="options" placeholder="Insert each option on it's own line.."></textarea>
+                <button class="ui small primary button">Submit</button>
+                <a href="/polls" class="ui small negative button">Go Back</a>
+            </form>
+        </section>
+    </main>
+
+<% include ../partials/footer %>

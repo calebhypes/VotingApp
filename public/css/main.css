@@ -108,6 +108,45 @@ main {
     align-items: center;
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.form form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    width: 25%;
+}
+
+input,
+textarea {
+    margin: 10px 0;
+    height: 20px;
+    padding: 6px 12px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    width: 100%;
+    flex: 0 0 100%;
+}
+
+textarea {
+    height: 200px;
+}
+
+form button,
+form a {
+    width: 49%;
+}
+
+form a {
+    max-width: 161px;
+}
+
 footer {
     display: flex;
     justify-content: space-between;

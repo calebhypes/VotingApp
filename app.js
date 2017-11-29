@@ -1,5 +1,6 @@
 const   express         = require('express'),
         mongoose        = require('mongoose'),
+        bodyParser      = require('body-parser'),
         passport        = require('passport'),
         GitHubStrategy  = require('passport-github2').Strategy,
         User            = require('./models/user'),
@@ -10,6 +11,7 @@ const indexRoutes       = require('./routes/index'),
       pollRoutes        = require('./routes/polls');
 
 require('dotenv').config();
+app.use(bodyParser.urlencoded({extended: true}));
 mongoose.connect('mongodb://localhost/voting', {useMongoClient: true});
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
