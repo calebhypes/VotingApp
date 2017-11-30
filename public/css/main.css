@@ -147,6 +147,20 @@ form a {
     max-width: 161px;
 }
 
+.options {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.options div {
+    text-align: center;
+}
+
+.options button {
+    width: 200px;
+}
+
 footer {
     display: flex;
     justify-content: space-between;

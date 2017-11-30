@@ -4,25 +4,55 @@
         <h1><%= poll.question %></h1>
 
         <canvas id="chart" width="400" height="400">
-            <script>
-                var ctx = document.getElementById('chart');
-                var chart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: [<% poll.pollOptions.forEach((pollOption) => { %>
-                            {
-                                value: <% pollOption.tally %>,
-                                label: <%pollOption.option %>
-                            }
-                            <% }) %>
-                        ],
-                    options: options
-                });
-            </script>
         </canvas>
-
-        <% poll.pollOptions.forEach((pollOption) => { %>
-            <button class="ui small primary button"><%= pollOption.option %></button>
-        <% }) %>
+        <section class="options">
+            <% poll.pollOptions.forEach((pollOption) => { %>
+                <div>
+                    <button class="ui small primary button"><%= pollOption.option %></button>
+                    <!-- <br>
+                    <p id="tally"><%= pollOption.tally %></p> -->
+                </div>
+            <% }) %>
+        </section>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script>
+            
+            const CTX = document.getElementById('chart');
+    
+            var tally = [];
+            var labels = [];
+    
+            <% for(var i=0; i<poll.pollOptions.length; i++) { %>
+                labels.push('<%- poll.pollOptions[i].option %>');
+                tally.push(<%- poll.pollOptions[i].tally %>);
+            <% } %>
+    
+            var chart = new Chart(CTX, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Votes',
+                        data: tally,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 0
+                    }]
+                }
+            });
+    
+        </script>
+    <!-- <script src="../js/main.js"></script> -->
 <% include ../partials/footer %>
