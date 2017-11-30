@@ -16,38 +16,31 @@ router.get('/', (req, res) => {
 
 // Create - Add new poll to DB
 router.post('/', (req, res) => {
-    // res.send('new poll posted!');
     var question = req.body.question;
     var optionsList = req.body.options.split(/\n/);
-    // var options = [];
     var creator = {
         id: req.user._id,
         username: req.user.username
     };
+    var options = [];
 
-    // for (var i=0; i < optionsList.length; i++) {
-    //     if (/\S/.test(optionsList[i])) {
-    //         poll.pollOptions.options.push(optionsList[i].trim());
-    //     }        
-    // }
+    for (var i=0; i < optionsList.length; i++) {
+        // only push options that contain non-whitespace characters
+        if (/\S/.test(optionsList[i])) {
+            // Push separate options objects to pollOptions within poll schema.
+            options.push({ option: optionsList[i].trim(), tally: 0 });
+        }        
+    }
 
-    var newPoll = {question: question, creator: creator}
+    var newPoll = {question: question, pollOptions: options, creator: creator}
 
-    // Poll creation is working however currently there is an issue with adding the trimmed options to the pollOptions array.
-    Poll.create(newPoll, (err, poll) => {
+    Poll.create(newPoll, (err, newlyCreated) => {
         if (err) {
             console.log(err);
         } else {
-            for (var i=0; i < optionsList.length; i++) {
-                if (/\S/.test(optionsList[i])) {
-                    poll.pollOptions.push(optionsList[i].trim());
-                }        
-            }
-            console.log(poll.pollOptions[0].option);
             res.redirect('/polls');
         }
     });
-    // res.send('Here are the options for the poll titled \'' + question +'\': ' + options);
 });
 
 // New - Form to add new poll
@@ -57,7 +50,13 @@ router.get('/new', (req, res) => {
 
 // Show - Show selected poll info
 router.get('/:id', (req, res) => {
-    res.send('Poll information!');
+    Poll.findById(req.params.id).exec((err, foundPoll) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("polls/show", {poll: foundPoll});
+        };
+    });
 });
 
 // Edit - Edit Poll

@@ -2,7 +2,10 @@ const mongoose      = require('mongoose');
 
 var PollSchema = new mongoose.Schema({
     question: String,
-    pollOptions: [{option: String}],
+    pollOptions: [ {
+        option: String,
+        tally: Number
+    } ],
     creationDate: {
         type: Date,
         default: Date.now()

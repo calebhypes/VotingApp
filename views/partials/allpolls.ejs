@@ -2,7 +2,7 @@
         <h3>All Polls</h3>
         <ul>
             <% polls.forEach((poll) => { %>
-                <li><%= poll.question %></li>
+                <a href="/polls/<%= poll._id %>"><li><%= poll.question %></li></a>
             <% }) %>
         </ul>
         <div class="ui pagination menu centered">

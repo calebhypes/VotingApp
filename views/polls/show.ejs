@@ -1,0 +1,28 @@
+<% include ../partials/header %>
+
+    <main>
+        <h1><%= poll.question %></h1>
+
+        <canvas id="chart" width="400" height="400">
+            <script>
+                var ctx = document.getElementById('chart');
+                var chart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: [<% poll.pollOptions.forEach((pollOption) => { %>
+                            {
+                                value: <% pollOption.tally %>,
+                                label: <%pollOption.option %>
+                            }
+                            <% }) %>
+                        ],
+                    options: options
+                });
+            </script>
+        </canvas>
+
+        <% poll.pollOptions.forEach((pollOption) => { %>
+            <button class="ui small primary button"><%= pollOption.option %></button>
+        <% }) %>
+    </main>
+
+<% include ../partials/footer %>
