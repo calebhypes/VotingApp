@@ -161,6 +161,11 @@ form a {
     width: 200px;
 }
 
+.canvas {
+    height: 400px;
+    width: 400px;
+}
+
 footer {
     display: flex;
     justify-content: space-between;
