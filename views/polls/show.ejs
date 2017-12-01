@@ -1,7 +1,7 @@
 <% include ../partials/header %>
 
     <main>
-        <h1><%= poll.question %></h1>
+        <h1 class="poll-header"><%= poll.question %></h1>
         <div class="canvas">
             <canvas id="chart" width="400" height="400">
             </canvas>
@@ -9,7 +9,7 @@
         <section class="options">
             <% poll.pollOptions.forEach((pollOption) => { %>
                 <div>
-                    <button class="ui small primary button"><%= pollOption.option %></button>
+                    <button class="ui small primary button" data-option="<%- pollOption.option %>"><%= pollOption.option %></button>
                     <!-- <br>
                     <p id="tally"><%= pollOption.tally %></p> -->
                 </div>
@@ -37,12 +37,17 @@
                 return 'rgba(' + red + ',' + green + ',' + blue;
             }
     
-            <% for(var i=0; i<poll.pollOptions.length; i++) { %>
+            <% for (var i=0; i<poll.pollOptions.length; i++) { %>
                 labels.push('<%- poll.pollOptions[i].option %>');
                 tally.push(<%- poll.pollOptions[i].tally %>);
                 var color = randomizedRGB();
                 backgroundColors.push(color + ', 0.5)');
                 borderColors.push(color + ', 1)');
+
+                var button<%- poll.pollOptions[i].option %> = document.querySelector('[data-option="<%- poll.pollOptions[i].option %>"]');
+                button<%- poll.pollOptions[i].option %>.addEventListener("click", () => {
+                    <%  %>; // UPDATE ._id for poll on server side.
+                });
             <% } %>
     
             var chart = new Chart(CTX, {
@@ -58,6 +63,7 @@
                     }]
                 }
             });
+
         </script>
-    <!-- <script src="../js/main.js"></script> -->
+    
 <% include ../partials/footer %>

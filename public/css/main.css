@@ -50,6 +50,7 @@ nav li span {
 
 main {
     min-height: calc(100vh - 140px);
+    margin: 0 auto;
 }
 
 .atf {
@@ -99,6 +100,10 @@ main {
     padding: 15px;
     width: 820px;
     margin-bottom: 10px;
+}
+
+.poll-header {
+    text-align: center;
 }
 
 .alltime {
@@ -164,6 +169,7 @@ form a {
 .canvas {
     height: 400px;
     width: 400px;
+    margin: 0 auto 50px auto;
 }
 
 footer {
