@@ -1,6 +1,7 @@
 const express           = require('express'),
       router            = express.Router(),
       User              = require('../models/user'),
+      Poll              = require('../models/poll'),
       passport          = require('passport'),
       GitHubStrategy    = require('passport-github2').Strategy;
 
@@ -10,7 +11,13 @@ require('dotenv').config();
 
 // Index route
 router.get('/', (req, res) => {
-    res.render('index');
+    Poll.find().sort({ 'creationDate': -1}).exec((err, recentPolls) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('index', {polls: recentPolls, currentUser: req.user})
+        }
+    });
 });
 
 // =======================

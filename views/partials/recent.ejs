@@ -1,0 +1,9 @@
+<section class="recent polls">
+        <h3>Recent Polls</h3>
+        <ul>
+            <% polls.forEach((poll) => { %>
+                <%- console.log(poll.creationDate); %>
+                <a href="/polls/<%= poll._id %>"><li><%= poll.question %></li></a>
+            <% }) %>
+        </ul>
+    </section>
