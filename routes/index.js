@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            res.render('index', {polls: recentPolls, currentUser: req.user})
+            res.render('index', {recent: recentPolls, currentUser: req.user})
         }
     });
 });

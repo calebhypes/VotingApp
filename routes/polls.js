@@ -5,12 +5,20 @@ const express   = require('express'),
 
 // Index - Display all polls
 router.get('/', (req, res) => {
+    // find all polls
     Poll.find({}, (err, allPolls) => {
         if (err) {
             console.log(err);
         } else {
-            res.render('polls/index', {polls: allPolls, currentUser: req.user})
-        }
+            // if all polls was successful also find all polls and order by most recent.
+            Poll.find().sort({ 'creationDate': -1}).limit(10).exec((err, recentPolls) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.render('polls/index', {polls: allPolls, recent: recentPolls, currentUser: req.user})
+                }
+            });
+        };
     });
 });
 
