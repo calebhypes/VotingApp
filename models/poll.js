@@ -2,6 +2,7 @@ const mongoose      = require('mongoose');
 
 var PollSchema = new mongoose.Schema({
     question: String,
+    totalVotes: Number,
     pollOptions: [ {
         option: String,
         tally: Number

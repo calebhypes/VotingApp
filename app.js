@@ -1,6 +1,7 @@
 const   express         = require('express'),
         mongoose        = require('mongoose'),
         bodyParser      = require('body-parser'),
+        methodOverride  = require('method-override'),
         passport        = require('passport'),
         GitHubStrategy  = require('passport-github2').Strategy,
         User            = require('./models/user'),
@@ -14,6 +15,7 @@ require('dotenv').config();
 app.use(bodyParser.urlencoded({extended: true}));
 mongoose.connect('mongodb://localhost/voting', {useMongoClient: true});
 app.set('view engine', 'ejs');
+app.use(methodOverride("_method"));
 app.use(express.static(__dirname + '/public'));
 
 //Passport configuration

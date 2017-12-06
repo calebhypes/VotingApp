@@ -9,7 +9,9 @@
         <section class="options">
             <% poll.pollOptions.forEach((pollOption) => { %>
                 <div>
-                    <button class="ui small primary button" data-option="<%- pollOption.option %>"><%= pollOption.option %></button>
+                    <!-- <form action="/polls/<%= poll._id %>?_method=PUT" method="POST"> -->
+                        <button id="<%- pollOption.option %>" class="ui small primary button"><%= pollOption.option %></button>
+                    <!-- </form> -->
                     <!-- <br>
                     <p id="tally"><%= pollOption.tally %></p> -->
                 </div>
@@ -37,17 +39,12 @@
                 return 'rgba(' + red + ',' + green + ',' + blue;
             }
     
-            <% for (var i=0; i<poll.pollOptions.length; i++) { %>
+            <% for (var i=0; i < poll.pollOptions.length; i++) { %>
                 labels.push('<%- poll.pollOptions[i].option %>');
                 tally.push(<%- poll.pollOptions[i].tally %>);
                 var color = randomizedRGB();
                 backgroundColors.push(color + ', 0.5)');
                 borderColors.push(color + ', 1)');
-
-                var button<%- poll.pollOptions[i].option %> = document.querySelector('[data-option="<%- poll.pollOptions[i].option %>"]');
-                button<%- poll.pollOptions[i].option %>.addEventListener("click", () => {
-                    <%  %>; // UPDATE ._id for poll on server side.
-                });
             <% } %>
     
             var chart = new Chart(CTX, {
