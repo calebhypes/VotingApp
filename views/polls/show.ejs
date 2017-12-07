@@ -6,6 +6,7 @@
             <canvas id="chart" width="400" height="400">
             </canvas>
         </div>
+        <% if (currentUser) { %>
         <section class="options">
             <form action="/polls/<%= poll._id %>?_method=PUT" method="POST">
                 <% poll.pollOptions.forEach((pollOption) => { %>
@@ -17,10 +18,13 @@
                 <br>
                 <div>
                     <button class="ui small positive button">Submit Answer</button>
-                    <a href="/polls/<%= poll._id %>/edit" class="ui small orange button">Edit</a>
+                    <% if (currentUser && poll.creator.id.equals(currentUser._id)) { %>
+                        <a href="/polls/<%= poll._id %>/edit/admin" class="ui small orange button">Edit</a>
+                    <% } %>
                 </div>
             </form>
         </section>
+        <% } %>
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>

@@ -143,6 +143,10 @@ textarea {
     height: 200px;
 }
 
+form {
+    text-align: center;
+}
+
 form button,
 form a {
     width: 49%;
@@ -165,10 +169,11 @@ input[type=radio].hide {
 .options div {
     text-align: center;
     margin: 10px;
+    display: inline-flex;
 }
 
-.options button {
-    width: 200px;
+.options div button {
+    width: 216px;
 }
 
 .canvas {

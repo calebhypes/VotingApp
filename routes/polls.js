@@ -68,10 +68,18 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// Edit - Edit Poll
-router.get('/:id/edit', (req, res) => {
-    res.send('edit poll!');
+// Edit - Edit Poll either as a user adding a new option or as a site admin or poll owner.
+
+// add new option as regular user
+router.get('/:id/edit/addOption', (req, res) => {
+    res.send('add new option to poll!');
 });
+
+// edit as site admin or poll owner.
+router.get('/:id/edit/admin', (req, res) => {
+    res.send('Admin privileges for poll creator or site admin');
+});
+
 
 // Update - Update edited poll
 // example update => b.polls.update({"pollOptions": {$elemMatch: {"_id": ObjectId("5a1ef162981bcaab9fb37a50")}}}, {$inc: {"pollOptions.$.tally": 5000}});
@@ -89,7 +97,7 @@ router.put('/:id', (req, res) => {
             }
         })
      } else {
-        res.send("Add new option!");
+        res.redirect("/polls/" + req.params.id +  "/edit/addOption");
     }
 });
 
