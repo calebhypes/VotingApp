@@ -77,7 +77,11 @@ router.get('/:id/edit/addOption', (req, res) => {
 
 // edit as site admin or poll owner.
 router.get('/:id/edit/admin', (req, res) => {
-    res.send('Admin privileges for poll creator or site admin');
+    Poll.findById(req.params.id, (err, foundPoll) => {
+        console.log(foundPoll);
+        res.render('polls/edit', {poll: foundPoll});
+    });
+    // res.send('Admin privileges for poll creator or site admin');
 });
 
 
