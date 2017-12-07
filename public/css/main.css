@@ -152,6 +152,10 @@ form a {
     max-width: 161px;
 }
 
+input[type=radio].hide {
+    display: none;
+}
+
 .options {
     display: flex;
     justify-content: space-around;
@@ -160,6 +164,7 @@ form a {
 
 .options div {
     text-align: center;
+    margin: 10px;
 }
 
 .options button {

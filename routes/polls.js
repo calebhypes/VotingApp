@@ -1,5 +1,6 @@
 const express   = require('express'),
       router    = express.Router(),
+      ObjectId  = require('mongodb').ObjectID,
       Poll      = require('../models/poll');
 
 
@@ -73,8 +74,23 @@ router.get('/:id/edit', (req, res) => {
 });
 
 // Update - Update edited poll
+// example update => b.polls.update({"pollOptions": {$elemMatch: {"_id": ObjectId("5a1ef162981bcaab9fb37a50")}}}, {$inc: {"pollOptions.$.tally": 5000}});
 router.put('/:id', (req, res) => {
-    res.send('Poll updated')
+    var userChoice = req.body.polloption;
+    console.log(req.params.id);
+    if (userChoice != 'other') {
+        Poll.findOneAndUpdate({"pollOptions": {$elemMatch: {"_id": ObjectId(userChoice)}}}, {$inc: {"pollOptions.$.tally": 1}}, (err, updatedPoll) => {
+            console.log('User Choice: ' + userChoice);
+            console.log(updatedPoll);
+            if (err) {
+                console.log(err);
+            } else {
+                res.redirect("/polls/" + req.params.id);
+            }
+        })
+     } else {
+        res.send("Add new option!");
+    }
 });
 
 // Destroy - Delete selected poll

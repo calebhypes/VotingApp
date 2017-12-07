@@ -7,15 +7,19 @@
             </canvas>
         </div>
         <section class="options">
-            <% poll.pollOptions.forEach((pollOption) => { %>
+            <form action="/polls/<%= poll._id %>?_method=PUT" method="POST">
+                <% poll.pollOptions.forEach((pollOption) => { %>
+                        <input id="<%- pollOption.option %>" class="hide" type="radio" value="<%- pollOption._id %>" name="polloption">
+                        <label  for="<%- pollOption.option %>" class="ui small primary button"><%= pollOption.option %></label>
+                <% }) %>
+                <input id="other" type="radio" class="hide" value="other" name="polloption">
+                <label for="other" class="ui small primary button">Other</label>
+                <br>
                 <div>
-                    <!-- <form action="/polls/<%= poll._id %>?_method=PUT" method="POST"> -->
-                        <button id="<%- pollOption.option %>" class="ui small primary button"><%= pollOption.option %></button>
-                    <!-- </form> -->
-                    <!-- <br>
-                    <p id="tally"><%= pollOption.tally %></p> -->
+                    <button class="ui small positive button">Submit Answer</button>
+                    <a href="/polls/<%= poll._id %>/edit" class="ui small orange button">Edit</a>
                 </div>
-            <% }) %>
+            </form>
         </section>
     </main>
 
