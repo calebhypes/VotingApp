@@ -156,7 +156,7 @@ form a {
     max-width: 161px;
 }
 
-input[type=radio].hide {
+input.hide {
     display: none;
 }
 

@@ -68,29 +68,20 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// Edit - Edit Poll either as a user adding a new option or as a site admin or poll owner.
-
-// add new option as regular user
-router.get('/:id/edit/addOption', (req, res) => {
-    res.send('add new option to poll!');
-});
-
-// edit as site admin or poll owner.
-router.get('/:id/edit/admin', (req, res) => {
-    Poll.findById(req.params.id, (err, foundPoll) => {
-        console.log(foundPoll);
-        res.render('polls/edit', {poll: foundPoll});
-    });
-    // res.send('Admin privileges for poll creator or site admin');
-});
+// Edit - Edit Poll as a user adding a new option.
+// router.get('/:id/new-option', (req, res) => {
+//     res.send('add new option to poll!');
+// });
 
 
 // Update - Update edited poll
 // example update => b.polls.update({"pollOptions": {$elemMatch: {"_id": ObjectId("5a1ef162981bcaab9fb37a50")}}}, {$inc: {"pollOptions.$.tally": 5000}});
 router.put('/:id', (req, res) => {
     var userChoice = req.body.polloption;
+    var userOption = req.body.other;
     console.log(req.params.id);
-    if (userChoice != 'other') {
+    // if userChoice via radio button is defined, and the custom option is undefined, proceed.
+    if (userChoice && !userOption) {
         Poll.findOneAndUpdate({"pollOptions": {$elemMatch: {"_id": ObjectId(userChoice)}}}, {$inc: {"pollOptions.$.tally": 1}}, (err, updatedPoll) => {
             console.log('User Choice: ' + userChoice);
             console.log(updatedPoll);
@@ -100,8 +91,18 @@ router.put('/:id', (req, res) => {
                 res.redirect("/polls/" + req.params.id);
             }
         })
-     } else {
-        res.redirect("/polls/" + req.params.id +  "/edit/addOption");
+        // if custom option is defined and user choice is undefined, proceed.
+     } else if (userOption && !userChoice) {
+        Poll.findByIdAndUpdate(req.params.id, {$push: {pollOptions: {option: userOption, tally: 1}}}, (err, updatedPoll) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.redirect("/polls/" + req.params.id);
+            }
+        })
+    } else {
+        console.log("Something went wrong");
+        res.redirect("/polls/" + req.params.id);
     }
 });
 

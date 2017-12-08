@@ -6,69 +6,78 @@
             <canvas id="chart" width="400" height="400">
             </canvas>
         </div>
-        <% if (currentUser) { %>
         <section class="options">
             <form action="/polls/<%= poll._id %>?_method=PUT" method="POST">
                 <% poll.pollOptions.forEach((pollOption) => { %>
                         <input id="<%- pollOption.option %>" class="hide" type="radio" value="<%- pollOption._id %>" name="polloption">
                         <label  for="<%- pollOption.option %>" class="ui small primary button"><%= pollOption.option %></label>
                 <% }) %>
-                <input id="other" type="radio" class="hide" value="other" name="polloption">
-                <label for="other" class="ui small primary button">Other</label>
+                <% if (currentUser) { %>
+                    <label id="other" class="ui small primary button">Other</label>
+                    <input class="hide" type="text" name="other" placeholder="Add your option...">
+                <% } %>
                 <br>
                 <div>
                     <button class="ui small positive button">Submit Answer</button>
-                    <% if (currentUser && poll.creator.id.equals(currentUser._id)) { %>
-                        <a href="/polls/<%= poll._id %>/edit/admin" class="ui small orange button">Edit</a>
-                    <% } %>
                 </div>
             </form>
         </section>
-        <% } %>
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
     <script>
-            const CTX = document.getElementById('chart');
-    
-            var tally = [];
-            var labels = [];
-            var backgroundColors = [];
-            var borderColors = [];
+        const otherBtn = document.querySelector("#other");
+        const otherTxt = document.querySelector("input[type=text]");
+        const optionRd = document.querySelectorAll("input[type=radio]");
 
-            function randomNumber(num) {
-                return Math.floor(Math.random() * num);                
+        otherBtn.addEventListener('click', () => {
+            otherTxt.classList.toggle('hide');
+            for (var i = 0; i < optionRd.length; i++) {
+                optionRd[i].checked = false;
             }
+        });
+    </script>
+    <script>
+        const CTX = document.getElementById('chart');
 
-            function randomizedRGB() {
-                var red = randomNumber(255);
-                var green = randomNumber(255);
-                var blue = randomNumber(255);
-                return 'rgba(' + red + ',' + green + ',' + blue;
+        var tally = [];
+        var labels = [];
+        var backgroundColors = [];
+        var borderColors = [];
+
+        function randomNumber(num) {
+            return Math.floor(Math.random() * num);                
+        }
+
+        function randomizedRGB() {
+            var red = randomNumber(255);
+            var green = randomNumber(255);
+            var blue = randomNumber(255);
+            return 'rgba(' + red + ',' + green + ',' + blue;
+        }
+
+        <% for (var i=0; i < poll.pollOptions.length; i++) { %>
+            labels.push('<%- poll.pollOptions[i].option %>');
+            tally.push(<%- poll.pollOptions[i].tally %>);
+            var color = randomizedRGB();
+            backgroundColors.push(color + ', 0.5)');
+            borderColors.push(color + ', 1)');
+        <% } %>
+
+        var chart = new Chart(CTX, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Votes',
+                    data: tally,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 0
+                }]
             }
-    
-            <% for (var i=0; i < poll.pollOptions.length; i++) { %>
-                labels.push('<%- poll.pollOptions[i].option %>');
-                tally.push(<%- poll.pollOptions[i].tally %>);
-                var color = randomizedRGB();
-                backgroundColors.push(color + ', 0.5)');
-                borderColors.push(color + ', 1)');
-            <% } %>
-    
-            var chart = new Chart(CTX, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Votes',
-                        data: tally,
-                        backgroundColor: backgroundColors,
-                        borderColor: borderColors,
-                        borderWidth: 0
-                    }]
-                }
-            });
+        });
 
-        </script>
+    </script>
     
 <% include ../partials/footer %>
