@@ -1,0 +1,15 @@
+<% include ../partials/header %>
+
+    <h1<%= currentUser.username %>'s polls</h1>
+
+    <section class="polls">
+        <ul>
+            <% polls.forEach((poll) => { %>
+                <% if (currentUser.username  == poll.creator.username) { %>
+                    <a href="/polls/<%= poll._id %>"><li><%= poll.question %></li></a>
+                <% } %>
+            <% }) %>
+        </ul>
+    </section>
+
+<% include ../partials/footer %>

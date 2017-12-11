@@ -57,22 +57,21 @@ router.get('/new', (req, res) => {
     res.render('polls/new');
 });
 
-// Show - Show selected poll info
-router.get('/:id', (req, res) => {
-    Poll.findById(req.params.id).exec((err, foundPoll) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.render("polls/show", {poll: foundPoll});
-        };
-    });
-});
-
-// Edit - Edit Poll as a user adding a new option.
-// router.get('/:id/new-option', (req, res) => {
-//     res.send('add new option to poll!');
+// // Show - Show selected poll info
+// router.get('/:id', (req, res) => {
+//     Poll.findById(req.params.id).exec((err, foundPoll) => {
+//         if (err) {
+//             console.log(err);
+//         } else {
+//             res.render("polls/show", {poll: foundPoll});
+//         };
+//     });
 // });
 
+// Show My Polls - Show polls created by signed in user
+router.get('/polls/mypolls', (req, res) => {
+    res.render('polls/userpolls');
+});
 
 // Update - Update edited poll
 // example update => b.polls.update({"pollOptions": {$elemMatch: {"_id": ObjectId("5a1ef162981bcaab9fb37a50")}}}, {$inc: {"pollOptions.$.tally": 5000}});
@@ -110,9 +109,7 @@ router.delete('/:id', (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            var data = JSON.stringify('localhost:3000/polls');
-            res.header('Content-Length', data.length);
-            res.end(data);
+            res.redirect("/polls");
         }
     });
     // res.send('Poll deleted!');
