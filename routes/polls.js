@@ -16,7 +16,10 @@ router.get('/', (req, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    res.render('polls/index', {polls: allPolls, recent: recentPolls, currentUser: req.user})
+                    // if recent polls was successful, also find and sort polls based on popularity.
+                    Poll.find().sort({ 'totalVotes': -1}).limit(10).exec((err, popularPolls) => {
+                        res.render('polls/index', {polls: allPolls, recent: recentPolls, popular: popularPolls, currentUser: req.user});
+                    });
                 }
             });
         };
@@ -31,6 +34,7 @@ router.post('/', (req, res) => {
         id: req.user._id,
         username: req.user.username
     };
+    var totalVotes = 0;
     var options = [];
 
     for (var i=0; i < optionsList.length; i++) {
@@ -41,7 +45,7 @@ router.post('/', (req, res) => {
         }        
     }
 
-    var newPoll = {question: question, pollOptions: options, creator: creator}
+    var newPoll = {question: question, totalVotes: totalVotes, pollOptions: options, creator: creator}
 
     Poll.create(newPoll, (err, newlyCreated) => {
         if (err) {
@@ -57,16 +61,16 @@ router.get('/new', (req, res) => {
     res.render('polls/new');
 });
 
-// // Show - Show selected poll info
-// router.get('/:id', (req, res) => {
-//     Poll.findById(req.params.id).exec((err, foundPoll) => {
-//         if (err) {
-//             console.log(err);
-//         } else {
-//             res.render("polls/show", {poll: foundPoll});
-//         };
-//     });
-// });
+// Show - Show selected poll info
+router.get('/:id', (req, res) => {
+    Poll.findById(req.params.id).exec((err, foundPoll) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("polls/show", {poll: foundPoll});
+        };
+    });
+});
 
 // Show My Polls - Show polls created by signed in user
 router.get('/polls/mypolls', (req, res) => {
@@ -78,10 +82,9 @@ router.get('/polls/mypolls', (req, res) => {
 router.put('/:id', (req, res) => {
     var userChoice = req.body.polloption;
     var userOption = req.body.other;
-    console.log(req.params.id);
     // if userChoice via radio button is defined, and the custom option is undefined, proceed.
     if (userChoice && !userOption) {
-        Poll.findOneAndUpdate({"pollOptions": {$elemMatch: {"_id": ObjectId(userChoice)}}}, {$inc: {"pollOptions.$.tally": 1}}, (err, updatedPoll) => {
+        Poll.findOneAndUpdate({"pollOptions": {$elemMatch: {"_id": ObjectId(userChoice)}}}, {$inc: {"pollOptions.$.tally": 1, "totalVotes": 1}}, (err, updatedPoll) => {
             if (err) {
                 console.log(err);
             } else {

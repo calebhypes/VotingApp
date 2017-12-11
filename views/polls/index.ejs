@@ -5,16 +5,9 @@
         <section class="top10 polls">
             <h3>Top 10 Polls</h3>
             <ul>
-                <li>Poll Name</li>
-                <li>Poll Name</li>
-                <li>Poll Name</li>
-                <li>Poll Name</li>
-                <li>Poll Name</li>
-                <li>Poll Name</li>
-                <li>Poll Name</li>
-                <li>Poll Name</li>
-                <li>Poll Name</li>
-                <li>Poll Name</li>
+                <% popular.forEach((poll) => { %>
+                    <a href="/polls/<%= poll._id %>"><li><%= poll.question %></li></a>
+                <% }) %>
             </ul>
         </section>
 

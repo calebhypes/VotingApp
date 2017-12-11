@@ -125,7 +125,6 @@ main {
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    width: 25%;
 }
 
 input,
@@ -141,6 +140,7 @@ textarea {
 
 textarea {
     height: 200px;
+    resize: none;
 }
 
 form {
