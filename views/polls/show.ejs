@@ -19,24 +19,46 @@
                 <br>
                 <div>
                     <button class="ui small positive button">Submit Answer</button>
+                    <% if (currentUser && poll.creator.id.equals(currentUser._id)) { %>
+                        <a href="#" class="ui small negative button">Delete</a>
+                    <% } %>
                 </div>
             </form>
         </section>
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-    <script>
-        const otherBtn = document.querySelector("#other");
-        const otherTxt = document.querySelector("input[type=text]");
-        const optionRd = document.querySelectorAll("input[type=radio]");
+    <% if (currentUser) { %>
+        <script>
+            const otherBtn = document.querySelector("#other");
+            const otherTxt = document.querySelector("input[type=text]");
+            const optionRd = document.querySelectorAll("input[type=radio]");
+            <% if (currentUser && poll.creator.id.equals(currentUser._id)) { %>
+                const deleteBtn = document.querySelector(".negative");
 
-        otherBtn.addEventListener('click', () => {
-            otherTxt.classList.toggle('hide');
-            for (var i = 0; i < optionRd.length; i++) {
-                optionRd[i].checked = false;
-            }
-        });
-    </script>
+                deleteBtn.addEventListener('click', () => {
+                    var XHR = new XMLHttpRequest();
+
+                    XHR.onreadystatechange = () => {
+                        if (XHR.readyState == 4 && XHR.status == 200) {
+                            window.location = "/polls";
+                        }
+                    }
+
+                    XHR.open('POST', '/polls/<%= poll._id %>?_method=DELETE');
+                    XHR.send();
+                });
+
+            <% } %>
+
+            otherBtn.addEventListener('click', () => {
+                otherTxt.classList.toggle('hide');
+                for (var i = 0; i < optionRd.length; i++) {
+                    optionRd[i].checked = false;
+                }
+            });
+        </script>
+    <% } %>
     <script>
         const CTX = document.getElementById('chart');
 
@@ -73,7 +95,7 @@
                     data: tally,
                     backgroundColor: backgroundColors,
                     borderColor: borderColors,
-                    borderWidth: 0
+                    borderWidth: 2
                 }]
             }
         });

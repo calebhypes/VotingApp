@@ -83,8 +83,6 @@ router.put('/:id', (req, res) => {
     // if userChoice via radio button is defined, and the custom option is undefined, proceed.
     if (userChoice && !userOption) {
         Poll.findOneAndUpdate({"pollOptions": {$elemMatch: {"_id": ObjectId(userChoice)}}}, {$inc: {"pollOptions.$.tally": 1}}, (err, updatedPoll) => {
-            console.log('User Choice: ' + userChoice);
-            console.log(updatedPoll);
             if (err) {
                 console.log(err);
             } else {
@@ -108,7 +106,16 @@ router.put('/:id', (req, res) => {
 
 // Destroy - Delete selected poll
 router.delete('/:id', (req, res) => {
-    res.send('Poll deleted!');
+    Poll.findByIdAndRemove(req.params.id, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            var data = JSON.stringify('localhost:3000/polls');
+            res.header('Content-Length', data.length);
+            res.end(data);
+        }
+    });
+    // res.send('Poll deleted!');
 });
 
 module.exports = router;
