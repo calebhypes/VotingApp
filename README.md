@@ -22,3 +22,7 @@ This is still a work in progress and I'm actively making changes to this. In the
 All feedback is welcome!
 
 
+#### Additional To Do's
+- [ ] Working Pagination
+- [ ] Completed UI/Styling
+
