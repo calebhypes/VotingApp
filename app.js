@@ -5,6 +5,7 @@ const   express         = require('express'),
         passport        = require('passport'),
         GitHubStrategy  = require('passport-github2').Strategy,
         User            = require('./models/user'),
+        flash           = require('connect-flash'),
         app             = express();
 
 // require routes
@@ -17,6 +18,7 @@ mongoose.connect('mongodb://localhost/voting', {useMongoClient: true});
 app.set('view engine', 'ejs');
 app.use(methodOverride("_method"));
 app.use(express.static(__dirname + '/public'));
+app.use(flash());
 
 //Passport configuration
 app.use(require('express-session')({
@@ -40,6 +42,8 @@ passport.deserializeUser(function(id, done) {
 
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 

@@ -1,7 +1,8 @@
-const express   = require('express'),
-      router    = express.Router(),
-      ObjectId  = require('mongodb').ObjectID,
-      Poll      = require('../models/poll');
+const express       = require('express'),
+      router        = express.Router(),
+      ObjectId      = require('mongodb').ObjectID,
+      Poll          = require('../models/poll'),
+      middleware    = require('../middleware');
 
 
 // Index - Display all polls
@@ -27,7 +28,7 @@ router.get('/', (req, res) => {
 });
 
 // Create - Add new poll to DB
-router.post('/', (req, res) => {
+router.post('/', middleware.isLoggedIn, (req, res) => {
     var question = req.body.question;
     var optionsList = req.body.options.split(/\n/);
     var creator = {
@@ -51,18 +52,19 @@ router.post('/', (req, res) => {
         if (err) {
             console.log(err);
         } else {
+            req.flash("success", "New poll created successfully!");
             res.redirect('/polls');
         }
     });
 });
 
 // New - Form to add new poll
-router.get('/new', (req, res) => {
+router.get('/new', middleware.isLoggedIn, (req, res) => {
     res.render('polls/new');
 });
 
 // Show My Polls - Show polls created by signed in user
-router.get('/mypolls', (req, res) => {
+router.get('/mypolls', middleware.isLoggedIn, (req, res) => {
     // db.collection.find({'creator.id': ObjectId(user._id)});
     // finds all polls with a Creator ID that matches the current users ID.
     Poll.find({'creator.id': ObjectId(req.user._id)}, (err, userPolls) => {
@@ -77,8 +79,9 @@ router.get('/mypolls', (req, res) => {
 // Show - Show selected poll info
 router.get('/:id', (req, res) => {
     Poll.findById(req.params.id).exec((err, foundPoll) => {
-        if (err) {
-            console.log(err);
+        if (err || !foundPoll) {
+            req.flash("error", "That poll doesn't exist");
+            res.redirect("/polls");
         } else {
             res.render("polls/show", {poll: foundPoll});
         };
@@ -95,6 +98,7 @@ router.put('/:id', (req, res) => {
             if (err) {
                 console.log(err);
             } else {
+                req.flash("success", "Thank you for your vote!");
                 res.redirect("/polls/" + req.params.id);
             }
         })
@@ -104,21 +108,25 @@ router.put('/:id', (req, res) => {
             if (err) {
                 console.log(err);
             } else {
+                req.flash("success", "New option added and vote tallied!");
                 res.redirect("/polls/" + req.params.id);
             }
         })
     } else {
         console.log("Something went wrong");
+        req.flash("error", "Something went wrong! Try voting again!");
         res.redirect("/polls/" + req.params.id);
     }
 });
 
 // Destroy - Delete selected poll
-router.delete('/:id', (req, res) => {
+router.delete('/:id', middleware.checkPollOwnership, (req, res) => {
     Poll.findByIdAndRemove(req.params.id, (err) => {
         if (err) {
-            console.log(err);
+            req.flash("error", "There was an error deleting the selected poll, try again!");
+            res.redirect("/polls");
         } else {
+            req.flash("success", "Selected poll deleted successfully!");
             res.redirect("/polls");
         }
     });

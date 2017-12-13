@@ -48,6 +48,10 @@ nav li span {
     opacity: 0.5;
 }
 
+.message {
+    text-align: center;
+}
+
 main {
     min-height: calc(100vh - 140px);
     margin: 0 auto;

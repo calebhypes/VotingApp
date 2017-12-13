@@ -69,6 +69,7 @@ router.get('/auth/github/callback', passport.authenticate('github', { failureRed
 // logout logic
 router.get("/logout", (req, res) => {
     req.logout();
+    req.flash("success", "Logged out successfully!");
     res.redirect('/');
 });
 
