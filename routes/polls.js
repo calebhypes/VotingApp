@@ -61,6 +61,19 @@ router.get('/new', (req, res) => {
     res.render('polls/new');
 });
 
+// Show My Polls - Show polls created by signed in user
+router.get('/mypolls', (req, res) => {
+    // db.collection.find({'creator.id': ObjectId(user._id)});
+    // finds all polls with a Creator ID that matches the current users ID.
+    Poll.find({'creator.id': ObjectId(req.user._id)}, (err, userPolls) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('polls/userpolls', {polls: userPolls });
+        }
+    });
+});
+
 // Show - Show selected poll info
 router.get('/:id', (req, res) => {
     Poll.findById(req.params.id).exec((err, foundPoll) => {
@@ -72,13 +85,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// Show My Polls - Show polls created by signed in user
-router.get('/polls/mypolls', (req, res) => {
-    res.render('polls/userpolls');
-});
-
 // Update - Update edited poll
-// example update => b.polls.update({"pollOptions": {$elemMatch: {"_id": ObjectId("5a1ef162981bcaab9fb37a50")}}}, {$inc: {"pollOptions.$.tally": 5000}});
 router.put('/:id', (req, res) => {
     var userChoice = req.body.polloption;
     var userOption = req.body.other;
