@@ -15,12 +15,11 @@
         <nav>
             <% if (!currentUser) { %>
                 <li><a href="/">Home</a></li>
-                <li><a href="#">About</a></li>
+                <li><a href="/polls">All Polls</a></li>
                 <li><a href="/auth/github/">Login with Github <i class="fa fa-lg fa-github"></i></a></li>
             <% } else { %>
                 <li><span>Welcome, <%= currentUser.username %></span></li>
                 <li><a href="/">Home</a></li>
-                <li><a href="#">About</a></li>
                 <li><a href="/polls">All Polls</a></li>
                 <li><a href="/polls/mypolls">My Polls</a></li>
                 <li><a href="/logout">Logout</a></li>
