@@ -1,12 +1,13 @@
-const   express         = require('express'),
-        mongoose        = require('mongoose'),
-        bodyParser      = require('body-parser'),
-        methodOverride  = require('method-override'),
-        passport        = require('passport'),
-        GitHubStrategy  = require('passport-github2').Strategy,
-        User            = require('./models/user'),
-        flash           = require('connect-flash'),
-        app             = express();
+const   express             = require('express'),
+        mongoose            = require('mongoose'),
+        bodyParser          = require('body-parser'),
+        expressSanitizer    = require('express-sanitizer'),
+        methodOverride      = require('method-override'),
+        passport            = require('passport'),
+        GitHubStrategy      = require('passport-github2').Strategy,
+        User                = require('./models/user'),
+        flash               = require('connect-flash'),
+        app                 = express();
 
 // require routes
 const indexRoutes       = require('./routes/index'),
@@ -14,6 +15,7 @@ const indexRoutes       = require('./routes/index'),
 
 require('dotenv').config();
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(expressSanitizer())
 mongoose.connect('mongodb://localhost/voting', {useMongoClient: true});
 app.set('view engine', 'ejs');
 app.use(methodOverride("_method"));

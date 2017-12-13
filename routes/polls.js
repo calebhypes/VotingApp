@@ -29,8 +29,8 @@ router.get('/', (req, res) => {
 
 // Create - Add new poll to DB
 router.post('/', middleware.isLoggedIn, (req, res) => {
-    var question = req.body.question;
-    var optionsList = req.body.options.split(/\n/);
+    var question = req.sanitize(req.body.question);
+    var optionsList = req.sanitize(req.body.options.split(/\n/));
     var creator = {
         id: req.user._id,
         username: req.user.username
@@ -91,7 +91,7 @@ router.get('/:id', (req, res) => {
 // Update - Update edited poll
 router.put('/:id', (req, res) => {
     var userChoice = req.body.polloption;
-    var userOption = req.body.other;
+    var userOption = req.sanitize(req.body.other);
     // if userChoice via radio button is defined, and the custom option is undefined, proceed.
     if (userChoice && !userOption) {
         Poll.findOneAndUpdate({"pollOptions": {$elemMatch: {"_id": ObjectId(userChoice)}}}, {$inc: {"pollOptions.$.tally": 1, "totalVotes": 1}}, (err, updatedPoll) => {

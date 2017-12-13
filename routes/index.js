@@ -49,7 +49,6 @@ passport.use(new GitHubStrategy({
         if(err) {
             return done(err);
         } else {
-            console.log(user);
             return done(null, user);
         }
     });
@@ -61,9 +60,7 @@ router.get('/auth/github', passport.authenticate('github', { scope: [ 'user:emai
 
 // login route
 router.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('/');
-    console.log(req.user.username + " logged in successfully");
-    // res.json(req.user);
+    res.redirect('/');ß
 });
 
 // logout logic

@@ -23,6 +23,7 @@ All feedback is welcome!
 
 
 #### Additional To Do's
+- [x] Sanitized forms
 - [ ] Working Pagination
 - [ ] Completed UI/Styling
 - [ ] Responsive Design for multiple device breakpoints
