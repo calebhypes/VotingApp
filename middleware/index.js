@@ -4,7 +4,7 @@ const Poll      = require('../models/poll'),
 var middlewareObj = {};
 
 middlewareObj.checkPollOwnership = (req, res, next) => {
-    if (req.isAuthenitcated()) {
+    if (req.isAuthenticated()) {
         Poll.findById(req.params.id, (err, foundPoll) => {
             if (err) {
                 req.flash("error", "Sorry, we couldn't find that poll!");
