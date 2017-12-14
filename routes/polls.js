@@ -6,25 +6,49 @@ const express       = require('express'),
 
 
 // Index - Display all polls
-router.get('/', (req, res) => {
-    // find all polls
-    Poll.find({}, (err, allPolls) => {
-        if (err) {
-            console.log(err);
-        } else {
-            // if all polls was successful also find all polls and order by most recent.
-            Poll.find().sort({ 'creationDate': -1}).limit(10).exec((err, recentPolls) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    // if recent polls was successful, also find and sort polls based on popularity.
-                    Poll.find().sort({ 'totalVotes': -1}).limit(10).exec((err, popularPolls) => {
-                        res.render('polls/index', {polls: allPolls, recent: recentPolls, popular: popularPolls, currentUser: req.user});
-                    });
-                }
-            });
-        };
+router.get('/', (req, res, next) => {
+    const perPage = 10;
+    const page = req.params.page || 1;
+
+    Poll.find({}).skip((perPage * page) - perPage).limit(perPage).exec((err, allPolls) => {
+        Poll.count().exec((err, count) => {
+            if (err) {
+                return next(err);
+            } else {
+                Poll.find().sort({ 'creationDate': -1}).limit(10).exec((err, recentPolls) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        // if recent polls was successful, also find and sort polls based on popularity.
+                        Poll.find().sort({ 'totalVotes': -1}).limit(10).exec((err, popularPolls) => {
+                            res.render('polls/index', {polls: allPolls, current: page, pages: Math.ceil(count / perPage), recent: recentPolls, popular: popularPolls, currentUser: req.user});
+                        });
+                    }
+                });
+            };
+        });
     });
+
+
+    // =================== BEFORE PAGINATION ATTEMPT WORKING.
+    // find all polls
+    // Poll.find({}, (err, allPolls) => {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         // if all polls was successful also find all polls and order by most recent.
+    //         Poll.find().sort({ 'creationDate': -1}).limit(10).exec((err, recentPolls) => {
+    //             if (err) {
+    //                 console.log(err);
+    //             } else {
+    //                 // if recent polls was successful, also find and sort polls based on popularity.
+    //                 Poll.find().sort({ 'totalVotes': -1}).limit(10).exec((err, popularPolls) => {
+    //                     res.render('polls/index', {polls: allPolls, recent: recentPolls, popular: popularPolls, currentUser: req.user});
+    //                 });
+    //             }
+    //         });
+    //     };
+    // });
 });
 
 // Create - Add new poll to DB

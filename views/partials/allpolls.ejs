@@ -5,11 +5,40 @@
                 <a href="/polls/<%= poll._id %>"><li><%= poll.question %></li></a>
             <% }) %>
         </ul>
-        <div class="ui pagination menu centered">
-            <a href="#" class="active item">1</a>
-            <a href="#" class="item">2</a>
-            <div class="disabled item">...</div>
-            <a href="#" class="item">11</a>
-            <a href="#" class="item">12</a>
-        </div>
+        <% if (pages > 0) { %>
+            <div class="ui pagination menu centered">
+                <% if (current == 1) { %>
+                    <a href="#" class="active disabled item">First</a>
+                <% } else { %>
+                    <a href="/polls" class="item">First</a>
+                <% } %>
+                <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                    <a class="item disabled">...</a>
+                <% } %>
+                <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                        <a class="active item"><%= i %></a>
+                    <% } else { %>
+                        <a href="#" class="item"><%= i %></a>
+                    <% } %>
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                        <a class="disabled item">...</a>
+                    <% } %>
+                <% } %>
+                <% if (current == pages) { %>
+                    <a class="disabled item">Last</a>
+                <% } else { %>
+                    <a href="#" class="item">Last</a>
+                <% } %>
+            </div>
+        <% } %>
     </section>
+
+<!-- <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul> -->
