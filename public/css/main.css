@@ -168,6 +168,10 @@ form a {
     max-width: 161px;
 }
 
+.ui.button.control {
+    width: 250px;
+}
+
 input.hide {
     display: none;
 }

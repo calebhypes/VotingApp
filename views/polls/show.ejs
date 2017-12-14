@@ -18,9 +18,12 @@
                 <% } %>
                 <br>
                 <div>
-                    <button class="ui small positive button">Submit Answer</button>
+                    <button class="ui small positive button control">Submit Answer</button>
+                    <% if (currentUser) { %>
+                        <a href="#" id="tweet" class="ui small primary button control"><i class="fa fa-twitter"></i> Share on Twitter</a>
+                    <% } %>
                     <% if (currentUser && poll.creator.id.equals(currentUser._id)) { %>
-                        <a href="#" class="ui small negative button">Delete</a>
+                        <a href="#" class="ui small negative button control">Delete</a>
                     <% } %>
                 </div>
             </form>
@@ -33,6 +36,7 @@
             const otherBtn = document.querySelector("#other");
             const otherTxt = document.querySelector("input[type=text]");
             const optionRd = document.querySelectorAll("input[type=radio]");
+            const shareBtn = document.querySelector('#tweet');
             <% if (currentUser && poll.creator.id.equals(currentUser._id)) { %>
                 const deleteBtn = document.querySelector(".negative");
 
@@ -50,6 +54,10 @@
                 });
 
             <% } %>
+
+            shareBtn.addEventListener('click', () => {
+                window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent("Check out this Poll on Gitvote | <%= poll.question %> | "  + window.location.href));
+            });
 
             otherBtn.addEventListener('click', () => {
                 otherTxt.classList.toggle('hide');
